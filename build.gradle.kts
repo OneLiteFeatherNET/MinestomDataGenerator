@@ -115,6 +115,7 @@ publishing {
         }
     }
 }
+
 signing {
     isRequired = System.getenv("CI") != null
 
