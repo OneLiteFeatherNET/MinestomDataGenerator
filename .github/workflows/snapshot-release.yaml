@@ -29,5 +29,6 @@ jobs:
           ORG_GRADLE_PROJECT_onelitefeatherSigningPassword: "${{ secrets.ONELITEFEATHER_GPG_PASSWORD }}"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          ./gradlew publish closeAndReleaseSonatypeStagingRepository -PforceSign=true -Peula=true
+          #./gradlew publish closeAndReleaseSonatypeStagingRepository -PforceSign=true -Peula=true
+          ./gradlew publish -PforceSign=true -Peula=true
           echo "Version: ${TAG_VERSION}" >> $GITHUB_STEP_SUMMARY
