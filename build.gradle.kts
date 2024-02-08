@@ -5,6 +5,9 @@ plugins {
     signing
     alias(libs.plugins.nexuspublish)
     alias(libs.plugins.publisdata)
+    id("net.kyori.indra") version "3.1.3"
+    id("net.kyori.indra.publishing") version "3.1.3"
+    id("net.kyori.indra.publishing.sonatype") version "3.1.3"
 }
 
 group = "net.onelitefeather.microtus"
@@ -52,21 +55,6 @@ tasks.processResources.get().dependsOn("generateData")
 publishData {
     addMainRepo("https://s01.oss.sonatype.org/service/local/")
     addSnapshotRepo("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-}
-
-
-nexusPublishing {
-    this.packageGroup.set("net.onelitefeather.microtus")
-
-    repositories.sonatype {
-        nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
-        snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
-
-        if (System.getenv("SONATYPE_USERNAME") != null) {
-            username.set(System.getenv("SONATYPE_USERNAME"))
-            password.set(System.getenv("SONATYPE_PASSWORD"))
-        }
-    }
 }
 
 publishing.publications.create<MavenPublication>("maven") {
