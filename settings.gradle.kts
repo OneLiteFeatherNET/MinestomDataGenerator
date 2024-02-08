@@ -1,5 +1,9 @@
 //enableFeaturePreview("VERSION_CATALOGS")
 
+rootProject.name = "minestom-ce-data"
+// DataGenerator
+include("DataGenerator")
+
 pluginManagement {
     repositories {
         maven(url = "https://repo.spongepowered.org/repository/maven-public/")
@@ -16,7 +20,3 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     // repositories declared¥
 }
-
-rootProject.name = "microtus-data"
-// DataGenerator
-include("DataGenerator")

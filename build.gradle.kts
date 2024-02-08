@@ -62,56 +62,61 @@ nexusPublishing {
     }
 }
 
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = "net.onelitefeather.microtus"
-            artifactId = "data"
-            from(project.components["java"])
+publishing.publications.create<MavenPublication>("maven") {
+    groupId = "net.onelitefeather.microtus"
+    artifactId = "data"
+    version = project.version.toString()
 
-            pom {
-                issueManagement {
-                    system.set("GitHub")
-                    url.set("https://github.com/OneLiteFeatherNET/MinestomDataGenerator/issues")
-                }
-                scm {
-                    connection.set("scm:git:git://github.com/OneLiteFeatherNET/MinestomDataGenerator.git")
-                    developerConnection.set("scm:git:git@github.com:OneLiteFeatherNET/MinestomDataGenerator.git")
-                    url.set("https://github.com/OneLiteFeatherNET/MinestomDataGenerator")
-                    tag.set("HEAD")
-                }
+    from(project.components["java"])
 
-                ciManagement {
-                    system.set("Github Actions")
-                    url.set("https://github.com/OneLiteFeatherNET/MinestomDataGenerator/actions")
-                }
-                licenses {
-                    license {
-                        name.set("Apache License, Version 2.0")
-                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
-                    }
-                }
-                developers {
-                    developer {
-                        id.set("mworzala")
-                        name.set("Matt Worzala")
-                        email.set("matt@hollowcube.dev")
-                    }
-                    developer {
-                        id.set("TheMode")
-                    }
-                    developer {
-                        id.set("themeinerlp")
-                        name.set("Phillipp Glanz")
-                        email.set("p.glanz@madfix.me")
-                    }
-                    developer {
-                        id.set("theEvilReaper")
-                        name.set("Steffen Wonning")
-                        email.set("steffenwx@gmail.com")
-                    }
-                }
+    pom {
+        name.set("data")
+        description.set("Minecraft game data values")
+        url.set("https://github.com/OneLiteFeatherNET/MinestomDataGenerator")
+
+        licenses {
+            license {
+                name.set("Apache 2.0")
+                url.set("https://github.com/OneLiteFeatherNET/MinestomDataGenerator/blob/main/LICENSE")
             }
+        }
+
+        developers {
+            developer {
+                id.set("mworzala")
+                name.set("Matt Worzala")
+                email.set("matt@hollowcube.dev")
+            }
+            developer {
+                id.set("TheMode")
+            }
+            developer {
+                id.set("themeinerlp")
+                name.set("Phillipp Glanz")
+                email.set("p.glanz@madfix.me")
+            }
+            developer {
+                id.set("theEvilReaper")
+                name.set("Steffen Wonning")
+                email.set("steffenwx@gmail.com")
+            }
+        }
+
+        issueManagement {
+            system.set("GitHub")
+            url.set("https://github.com/OneLiteFeatherNET/MinestomDataGenerator/issues")
+        }
+
+        scm {
+            connection.set("scm:git:git://github.com/OneLiteFeatherNET/MinestomDataGenerator.git")
+            developerConnection.set("scm:git:git@github.com:OneLiteFeatherNET/MinestomDataGenerator.git")
+            url.set("https://github.com/OneLiteFeatherNET/MinestomDataGenerator")
+            tag.set("HEAD")
+        }
+
+        ciManagement {
+            system.set("Github Actions")
+            url.set("https://github.com/OneLiteFeatherNET/MinestomDataGenerator/actions")
         }
     }
 }
