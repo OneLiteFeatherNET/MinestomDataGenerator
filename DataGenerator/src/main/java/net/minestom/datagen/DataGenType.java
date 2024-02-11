@@ -16,6 +16,7 @@ public enum DataGenType {
     DIMENSION_TYPES("dimension_types", new DimensionTypeGenerator()),
     DYE_COLORS("dye_colors", new DyeColorGenerator()),
     ENCHANTMENTS("enchantments", new EnchantmentGenerator()),
+    FEATURE_FLAGS("feature_flags", new FeatureFlagGenerator()),
     ENTITIES("entities", new EntityGenerator()),
     FLUIDS("fluids", new FluidGenerator()),
     GAME_EVENTS("game_events", new GameEventGenerator()),
