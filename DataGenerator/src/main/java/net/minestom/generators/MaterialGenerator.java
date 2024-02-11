@@ -65,7 +65,7 @@ public final class MaterialGenerator extends DataGenerator {
                         for (Pair<MobEffectInstance, Float> effectEntry : foodProperties.getEffects()) {
                             final var effect = effectEntry.getFirst();
                             final var chance = effectEntry.getSecond();
-                            ResourceLocation rl = mobEffectRegistry.getKey(effect.getEffect());
+                            ResourceLocation rl = mobEffectRegistry.getKey(effect.getEffect().value());
                             if (rl == null) {
                                 continue;
                             }

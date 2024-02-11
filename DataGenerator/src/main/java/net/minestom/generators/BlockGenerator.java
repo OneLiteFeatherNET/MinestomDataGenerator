@@ -12,11 +12,14 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minestom.datagen.DataGenerator;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -25,6 +28,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public final class BlockGenerator extends DataGenerator {
+
     @Override
     public JsonObject generate() {
         JsonObject blocks = new JsonObject();
@@ -51,13 +55,26 @@ public final class BlockGenerator extends DataGenerator {
             }
             // Random offset
             if (defaultBlockState.hasOffsetFunction()) {
-                blockJson.addProperty("maxHorizontalOffset", block.getMaxHorizontalOffset());
+                try {
+                    float maxHOffset = (float) MethodHandles.privateLookupIn(BlockBehaviour.class, MethodHandles.lookup()).findVirtual(BlockBehaviour.class, "getMaxHorizontalOffset", MethodType.methodType(float.class)).bindTo(block).invoke();
+                    blockJson.addProperty("maxHorizontalOffset", maxHOffset);
+                } catch (Throwable e) {
+                    throw new RuntimeException(e);
+                }
+
 
                 // There are only XY and XYZ offset functions, so we simply execute the offset func
                 // and check if the Y value is 0. It is seeded to the coordinates, so it should be reliable.
                 var result = defaultBlockState.getOffset(EmptyBlockGetter.INSTANCE, new BlockPos(42, 42, 42));
                 if (result.y != 0) {
-                    blockJson.addProperty("maxVerticalOffset", block.getMaxVerticalOffset());
+
+                    try {
+
+                        float maxVOffset = (float) MethodHandles.privateLookupIn(BlockBehaviour.class, MethodHandles.lookup()).findVirtual(BlockBehaviour.class, "getMaxVerticalOffset", MethodType.methodType(float.class)).bindTo(block).invoke();
+                        blockJson.addProperty("maxVerticalOffset", maxVOffset);
+                    } catch (Throwable e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
             // Default values

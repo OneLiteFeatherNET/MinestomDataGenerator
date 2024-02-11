@@ -20,7 +20,7 @@ public final class EnchantmentGenerator extends DataGenerator {
             addDefaultable(enchantmentJson, "discoverable", enchantment.isDiscoverable(), true);
             addDefaultable(enchantmentJson, "tradeable", enchantment.isTradeable(), true);
             addDefaultable(enchantmentJson, "treasureOnly", enchantment.isTreasureOnly(), false);
-            enchantmentJson.addProperty("category", enchantment.category.name());
+            // enchantmentJson.addProperty("category", enchantment.category.name()); // TODO: Needs be checked
             enchantments.add(location.toString(), enchantmentJson);
         }
         return enchantments;
