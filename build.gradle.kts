@@ -4,7 +4,6 @@ plugins {
     `maven-publish`
     signing
     alias(libs.plugins.nexuspublish)
-    alias(libs.plugins.publisdata)
 }
 
 group = "net.onelitefeather.microtus"
@@ -49,17 +48,27 @@ tasks.register("generateData") {
 
 tasks.processResources.get().dependsOn("generateData")
 
-publishData {
-    addMainRepo("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-    addSnapshotRepo("https://s01.oss.sonatype.org/content/repositories/snapshots")
+nexusPublishing {
+    this.packageGroup.set("net.minestom")
+    this.packageGroup.set("net.onelitefeather.microtus")
+
+    repositories.sonatype {
+        nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+        snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+
+        if (System.getenv("SONATYPE_USERNAME") != null) {
+            username.set(System.getenv("SONATYPE_USERNAME"))
+            password.set(System.getenv("SONATYPE_PASSWORD"))
+        }
+    }
 }
+
 publishing {
     publications {
         create<MavenPublication>("maven") {
             publishData.configurePublication(this)
             groupId = "net.onelitefeather.microtus"
             artifactId = "data"
-            version = publishData.getVersion()
             from(project.components["java"])
 
             pom {
