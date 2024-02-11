@@ -1,9 +1,8 @@
 package net.minestom.generators;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minestom.datagen.DataGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +13,10 @@ public final class FeatureFlagGenerator extends DataGenerator {
 
     @Override
     public JsonElement generate() throws Exception {
-        for (Feature<?> feature : BuiltInRegistries.FEATURE) {
-            System.out.println(BuiltInRegistries.FEATURE.getKey(feature));
-        }
-        return new JsonObject();
+        var jsonList = new JsonArray();
+        FeatureFlags.REGISTRY.toNames(FeatureFlags.REGISTRY.allFlags()).forEach(resourceLocation -> {
+            jsonList.add(resourceLocation.toString());
+        });
+        return jsonList;
     }
 }
