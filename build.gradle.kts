@@ -66,7 +66,6 @@ nexusPublishing {
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            publishData.configurePublication(this)
             groupId = "net.onelitefeather.microtus"
             artifactId = "data"
             from(project.components["java"])
@@ -118,7 +117,6 @@ publishing {
     }
     repositories {
         maven {
-            url = uri(publishData.getRepository())
             credentials(PasswordCredentials::class)
             name = "sonatype"
         }
