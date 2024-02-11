@@ -49,7 +49,6 @@ tasks.register("generateData") {
 tasks.processResources.get().dependsOn("generateData")
 
 nexusPublishing {
-    this.packageGroup.set("net.minestom")
     this.packageGroup.set("net.onelitefeather.microtus")
 
     repositories.sonatype {
@@ -113,12 +112,6 @@ publishing {
                     }
                 }
             }
-        }
-    }
-    repositories {
-        maven {
-            credentials(PasswordCredentials::class)
-            name = "sonatype"
         }
     }
 }
