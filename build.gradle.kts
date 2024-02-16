@@ -70,6 +70,9 @@ publishing {
             from(project.components["java"])
 
             pom {
+                name.set("data")
+                description.set("Minecraft game data values")
+                url.set("https://github.com/OneLiteFeatherNET/MinestomDataGenerator")
                 issueManagement {
                     system.set("GitHub")
                     url.set("https://github.com/OneLiteFeatherNET/MinestomDataGenerator/issues")
