@@ -19,3 +19,7 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     // repositories declared¥
 }
+
+rootProject.name = "minestom-data"
+// DataGenerator
+include("DataGenerator")
