@@ -1,6 +1,4 @@
-rootProject.name = "minestom-data"
-// DataGenerator
-include("DataGenerator")
+//enableFeaturePreview("VERSION_CATALOGS")
 
 pluginManagement {
     repositories {
