@@ -63,7 +63,8 @@ public final class EntityGenerator extends DataGenerator {
             entity.addProperty("translationKey", entityType.getDescriptionId());
             entity.addProperty("packetType", packetType);
             addDefaultable(entity, "fireImmune", entityType.fireImmune(), false);
-
+            entity.addProperty("height", entityType.getHeight());
+            entity.addProperty("width", entityType.getWidth());
             addDefaultable(entity, "drag", findDrag(entityType), DEFAULT_DRAG);
             addDefaultable(entity, "acceleration", findAcceleration(entityType), DEFAULT_ACCELERATION);
             entity.addProperty("clientTrackingRange", entityType.clientTrackingRange());
