@@ -1,6 +1,8 @@
 package net.minestom.generators;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.DataResult;
 import net.minecraft.Util;
 import net.minecraft.core.RegistryAccess;
@@ -12,6 +14,9 @@ import net.minecraft.nbt.SnbtPrinterTagVisitor;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.RegistryOps;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
@@ -31,35 +36,69 @@ public final class MaterialGenerator extends DataGenerator {
         JsonObject items = new JsonObject();
         var registry = BuiltInRegistries.ITEM;
         var blockRegistry = BuiltInRegistries.BLOCK;
+        var soundEventRegistry = BuiltInRegistries.SOUND_EVENT;
+        var mobEffectRegistry = BuiltInRegistries.MOB_EFFECT;
         var entityTypeRegistry = BuiltInRegistries.ENTITY_TYPE;
-
-        var registryAccess = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
-        var registryNbtOps = RegistryOps.create(NbtOps.INSTANCE, registryAccess);
-
         for (var item : registry) {
             final var location = registry.getKey(item);
 
             JsonObject itemJson = new JsonObject();
             itemJson.addProperty("id", registry.getId(item));
             itemJson.addProperty("translationKey", item.getDescriptionId());
-
-            // Component prototype
-            var components = new JsonObject();
-            for (var component : item.components()) {
-                var key = Util.getRegisteredName(BuiltInRegistries.DATA_COMPONENT_TYPE, component.type());
-                Tag t = unwrap(component.encodeValue(registryNbtOps));
-                var result = new SnbtPrinterTagVisitor("", 0, new ArrayList<>()).visit(t);
-                components.addProperty(key, result);
+            if (item.getMaxStackSize() != 64) { // Default = 64
+                itemJson.addProperty("maxStackSize", item.getMaxStackSize());
             }
-            itemJson.add("components", components);
-
+            if (item.getMaxDamage() != 0) { // Default = 0 (no durability)
+                itemJson.addProperty("maxDamage", item.getMaxDamage());
+            }
+            if (item.isFireResistant()) { // Default = false
+                itemJson.addProperty("fireResistant", true);
+            }
             // Corresponding block
             Block block = Block.byItem(item);
             if (block != Blocks.AIR) { // Default = no block
                 itemJson.addProperty("correspondingBlock", blockRegistry.getKey(block).toString());
             }
+            // Food properties
+            if (item.isEdible()) { // Default = false (not edible)
+                itemJson.addProperty("edible", true);
+                ResourceLocation eatingSound = soundEventRegistry.getKey(item.getEatingSound());
+                assert eatingSound != null;
+                itemJson.addProperty("eatingSound", eatingSound.toString());
+                ResourceLocation drinkingSound = soundEventRegistry.getKey(item.getDrinkingSound());
+                assert drinkingSound != null;
+                itemJson.addProperty("drinkingSound", drinkingSound.toString());
 
-            // Armor properties (which aren't components still??)
+                FoodProperties foodProperties = item.getFoodProperties();
+                if (foodProperties != null) {
+                    JsonObject foodPropertiesJson = new JsonObject();
+                    foodPropertiesJson.addProperty("alwaysEdible", foodProperties.canAlwaysEat());
+                    foodPropertiesJson.addProperty("isFastFood", foodProperties.isFastFood());
+                    foodPropertiesJson.addProperty("nutrition", foodProperties.getNutrition());
+                    foodPropertiesJson.addProperty("saturationModifier", foodProperties.getSaturationModifier());
+                    {
+                        // Food effects
+                        JsonArray effects = new JsonArray();
+                        for (Pair<MobEffectInstance, Float> effectEntry : foodProperties.getEffects()) {
+                            final var effect = effectEntry.getFirst();
+                            final var chance = effectEntry.getSecond();
+                            ResourceLocation rl = mobEffectRegistry.getKey(effect.getEffect());
+                            if (rl == null) {
+                                continue;
+                            }
+                            JsonObject foodEffect = new JsonObject();
+                            foodEffect.addProperty("id", rl.toString());
+                            foodEffect.addProperty("amplifier", effect.getAmplifier());
+                            foodEffect.addProperty("duration", effect.getDuration());
+                            foodEffect.addProperty("chance", chance);
+                            effects.add(foodEffect);
+                        }
+                        foodPropertiesJson.add("effects", effects);
+                    }
+                    itemJson.add("foodProperties", foodPropertiesJson);
+                }
+            }
+            // Armor properties
             if (item instanceof ArmorItem armorItem) {
                 JsonObject armorProperties = new JsonObject();
                 armorProperties.addProperty("defense", armorItem.getDefense());
@@ -67,26 +106,14 @@ public final class MaterialGenerator extends DataGenerator {
                 armorProperties.addProperty("slot", armorItem.getEquipmentSlot().getName());
                 itemJson.add("armorProperties", armorProperties);
             }
-
-            // Spawn egg properties
+            // SpawnEgg properties
             if (item instanceof SpawnEggItem spawnEggItem) {
                 JsonObject spawnEggProperties = new JsonObject();
-                spawnEggProperties.addProperty("entityType", entityTypeRegistry.getKey(spawnEggItem.getType(ItemStack.EMPTY)).toString());
+                spawnEggProperties.addProperty("entityType", entityTypeRegistry.getKey(spawnEggItem.getType(null)).toString());
                 itemJson.add("spawnEggProperties", spawnEggProperties);
             }
-
             items.add(location.toString(), itemJson);
         }
         return items;
-    }
-
-    public static <T> @NotNull T unwrap(@NotNull DataResult<T> result) {
-        if (result.result().isPresent()) {
-            return result.result().get();
-        } else if (result.error().isPresent()) {
-            throw new RuntimeException(result.error().get().message());
-        } else {
-            throw new RuntimeException("Unknown error");
-        }
     }
 }
