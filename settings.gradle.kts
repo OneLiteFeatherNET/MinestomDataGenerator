@@ -17,6 +17,6 @@ dependencyResolutionManagement {
     // repositories declared¥
 }
 
-rootProject.name = "minestom-data"
+rootProject.name = "microtus-data"
 // DataGenerator
 include("DataGenerator")

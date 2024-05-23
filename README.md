@@ -1,9 +1,9 @@
-# Minestom Data
+# Microtus Data
 
-[![license](https://img.shields.io/github/license/Minestom/MinestomDataGenerator.svg)](LICENSE)
-[![Discord Shield](https://discordapp.com/api/guilds/706185253441634317/widget.png?style=shield)](https://discord.gg/pkFRvqB)
+[![license](https://img.shields.io/github/license/OneLiteFeatherNET/MinestomDataGenerator.svg)](LICENSE)
+[![Discord Shield](https://discordapp.com/api/guilds/752527676903784518/widget.png?style=shield)](https://discord.onelitefeather.net)
 
-This is a data extractor and generator for Minecraft, meant to be used for [Minestom](https://github.com/minestom/minestom).  
+This is a data extractor and generator for Minecraft, meant to be used for [Microtus](https://github.com/OneLiteFeatherNET/Microtus).  
 It is based on [ArticData](https://github.com/Articdive/ArticData).
 
 ## Install
@@ -19,10 +19,11 @@ dependencies {
 ```
 
 ## Maintainers
-[@mworzala](https://github.com/mworzala)
+[@TheMeinerLP](https://github.com/themeinerlp)
+[@theEvilReaper](https://github.com/theEvilReaper)
 
 ## Contributing
 See [the contributing file](.github/CONTRIBUTING.md)!
 
 ## License
-[MIT License © Minestom ](LICENSE)
+[MIT License © Microtus ](LICENSE)
