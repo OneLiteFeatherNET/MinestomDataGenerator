@@ -15,6 +15,7 @@ public enum DataGenType {
     BLOCKS("blocks", new BlockGenerator()),
     COMMAND_ARGUMENTS("command_arguments", new CommandArgumentGenerator()),
     CUSTOM_STATISTICS("custom_statistics", new CustomStatisticGenerator()),
+    DIMENSION_TYPES("dimension_types", new DimensionTypeGenerator()),
     DYE_COLORS("dye_colors", new DyeColorGenerator()),
     ENCHANTMENTS("enchantments", new EnchantmentGenerator()),
     FEATURE_FLAGS("feature_flags", new FeatureFlagGenerator()),
@@ -31,6 +32,7 @@ public enum DataGenType {
     VILLAGER_PROFESSIONS("villager_professions", new VillagerProfessionGenerator()),
     VILLAGER_TYPES("villager_types", new VillagerTypeGenerator()),
 //    COMPONENTS("components", new ComponentGenerator()),
+    BANNER_PATTERNS("banner_patterns", new BannerPatternGenerator()),
     RECIPE_TYPE("recipe_types", new RecipeTypeGenerator()),
 
     BLOCK_TAGS("tags/block_tags", new BlockTagGenerator()),
@@ -39,11 +41,11 @@ public enum DataGenType {
     GAMEEVENT_TAGS("tags/gameplay_tags", new GameEventTagGenerator()),
     ITEM_TAGS("tags/item_tags", new ItemTagGenerator()),
 
-    DIMENSION_TYPES("dimension_types", new GenericResourceGenerator("dimension_type")),
+//    DIMENSION_TYPES("dimension_types", new GenericResourceGenerator("dimension_type")),
     CHAT_TYPES("chat_types", new GenericResourceGenerator("chat_type")),
     DAMAGE_TYPES("damage_types", new GenericResourceGenerator("damage_type")),
-    BANNER_PATTERNS("banner_patterns", new GenericResourceGenerator("banner_pattern")),
-    WOLF_VARIANTS("wolf_variants", new GenericResourceGenerator("wolf_variant")),
+//    BANNER_PATTERNS("banner_patterns", new GenericResourceGenerator("banner_pattern")),
+//    WOLF_VARIANTS("wolf_variants", new GenericResourceGenerator("wolf_variant")),
     TRIM_MATERIALS("trim_materials", new GenericResourceGenerator("trim_material")),
     TRIM_PATTERNS("trim_patterns", new GenericResourceGenerator("trim_pattern")),
 
