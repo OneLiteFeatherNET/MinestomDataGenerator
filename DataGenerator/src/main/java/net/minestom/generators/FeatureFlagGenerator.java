@@ -1,18 +1,22 @@
 package net.minestom.generators;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minestom.datagen.DataGenerator;
 
-public final class FeatureFlagGenerator extends DataGenerator {
+import java.util.Set;
 
+public final class FeatureFlagGenerator extends DataGenerator {
     @Override
-    public JsonElement generate() throws Exception {
-        var jsonList = new JsonArray();
-        FeatureFlags.REGISTRY.toNames(FeatureFlags.REGISTRY.allFlags()).forEach(resourceLocation -> {
-            jsonList.add(resourceLocation.toString());
-        });
-        return jsonList;
+    public JsonArray generate() throws Exception {
+        JsonArray flags = new JsonArray();
+
+        Set<ResourceLocation> featureFlags = FeatureFlags.REGISTRY.toNames(FeatureFlags.REGISTRY.allFlags());
+        for (ResourceLocation namespace : featureFlags) {
+            flags.add(namespace.toString());
+        }
+
+        return flags;
     }
 }
