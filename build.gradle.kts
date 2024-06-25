@@ -4,14 +4,10 @@ plugins {
     `maven-publish`
     signing
     alias(libs.plugins.nexuspublish)
-    alias(libs.plugins.publisdata)
-    id("net.kyori.indra") version "3.1.3"
-    id("net.kyori.indra.publishing") version "3.1.3"
-    id("net.kyori.indra.publishing.sonatype") version "3.1.3"
 }
 
 group = "net.onelitefeather.microtus"
-version = libs.versions.minecraft.get()
+version = System.getenv("TAG_VERSION") ?: "${libs.versions.minecraft.get()}-dev"
 description = "Generator for Minecraft game data values"
 
 java {
@@ -52,70 +48,73 @@ tasks.register("generateData") {
 
 tasks.processResources.get().dependsOn("generateData")
 
-publishData {
-    addMainRepo("https://s01.oss.sonatype.org/service/local/")
-    addSnapshotRepo("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-}
+nexusPublishing {
+    this.packageGroup.set("net.onelitefeather.microtus")
 
-publishing.publications.create<MavenPublication>("maven") {
-    publishData.configurePublication(this)
-    groupId = "net.onelitefeather.microtus"
-    artifactId = "data"
+    repositories.sonatype {
+        nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+        snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
 
-    from(project.components["java"])
-
-    pom {
-        name.set("data")
-        description.set("Minecraft game data values")
-        url.set("https://github.com/OneLiteFeatherNET/MinestomDataGenerator")
-
-        licenses {
-            license {
-                name.set("Apache 2.0")
-                url.set("https://github.com/OneLiteFeatherNET/MinestomDataGenerator/blob/main/LICENSE")
-            }
-        }
-
-        developers {
-            developer {
-                id.set("mworzala")
-                name.set("Matt Worzala")
-                email.set("matt@hollowcube.dev")
-            }
-            developer {
-                id.set("TheMode")
-            }
-            developer {
-                id.set("themeinerlp")
-                name.set("Phillipp Glanz")
-                email.set("p.glanz@madfix.me")
-            }
-            developer {
-                id.set("theEvilReaper")
-                name.set("Steffen Wonning")
-                email.set("steffenwx@gmail.com")
-            }
-        }
-
-        issueManagement {
-            system.set("GitHub")
-            url.set("https://github.com/OneLiteFeatherNET/MinestomDataGenerator/issues")
-        }
-
-        scm {
-            connection.set("scm:git:git://github.com/OneLiteFeatherNET/MinestomDataGenerator.git")
-            developerConnection.set("scm:git:git@github.com:OneLiteFeatherNET/MinestomDataGenerator.git")
-            url.set("https://github.com/OneLiteFeatherNET/MinestomDataGenerator")
-            tag.set("HEAD")
-        }
-
-        ciManagement {
-            system.set("Github Actions")
-            url.set("https://github.com/OneLiteFeatherNET/MinestomDataGenerator/actions")
+        if (System.getenv("SONATYPE_USERNAME") != null) {
+            username.set(System.getenv("SONATYPE_USERNAME"))
+            password.set(System.getenv("SONATYPE_PASSWORD"))
         }
     }
 }
 
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "net.onelitefeather.microtus"
+            artifactId = "data"
+            from(project.components["java"])
+
+            pom {
+                issueManagement {
+                    system.set("GitHub")
+                    url.set("https://github.com/OneLiteFeatherNET/MinestomDataGenerator/issues")
+                }
+                scm {
+                    connection.set("scm:git:git://github.com/OneLiteFeatherNET/MinestomDataGenerator.git")
+                    developerConnection.set("scm:git:git@github.com:OneLiteFeatherNET/MinestomDataGenerator.git")
+                    url.set("https://github.com/OneLiteFeatherNET/MinestomDataGenerator")
+                    tag.set("HEAD")
+                }
+
+                ciManagement {
+                    system.set("Github Actions")
+                    url.set("https://github.com/OneLiteFeatherNET/MinestomDataGenerator/actions")
+                }
+                licenses {
+                    license {
+                        name.set("Apache License, Version 2.0")
+                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("mworzala")
+                        name.set("Matt Worzala")
+                        email.set("matt@hollowcube.dev")
+                    }
+                    developer {
+                        id.set("TheMode")
+                    }
+                    developer {
+                        id.set("themeinerlp")
+                        name.set("Phillipp Glanz")
+                        email.set("p.glanz@madfix.me")
+                    }
+                    developer {
+                        id.set("theEvilReaper")
+                        name.set("Steffen Wonning")
+                        email.set("steffenwx@gmail.com")
+                    }
+                }
+            }
+        }
+    }
+}
 signing {
     isRequired = System.getenv("CI") != null
 

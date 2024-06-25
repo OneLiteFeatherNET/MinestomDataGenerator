@@ -1,12 +1,9 @@
-rootProject.name = "minestom-data"
-// DataGenerator
-include("DataGenerator")
+//enableFeaturePreview("VERSION_CATALOGS")
 
 pluginManagement {
     repositories {
         maven(url = "https://repo.spongepowered.org/repository/maven-public/")
         gradlePluginPortal()
-        maven("https://eldonexus.de/repository/maven-public/")
     }
 }
 
@@ -20,6 +17,6 @@ dependencyResolutionManagement {
     // repositories declared¥
 }
 
-rootProject.name = "minestom-data"
+rootProject.name = "microtus-data"
 // DataGenerator
 include("DataGenerator")
