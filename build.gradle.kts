@@ -70,6 +70,9 @@ publishing {
             from(project.components["java"])
 
             pom {
+                name.set(project.name)
+                description.set("Generates some data for Microtus projects.")
+                url.set("https://github.com/OneLiteFeatherNET/MinestomDataGenerator")
                 issueManagement {
                     system.set("GitHub")
                     url.set("https://github.com/OneLiteFeatherNET/MinestomDataGenerator/issues")
