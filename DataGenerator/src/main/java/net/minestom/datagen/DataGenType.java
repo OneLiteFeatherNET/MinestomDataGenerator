@@ -42,7 +42,8 @@ public enum DataGenType {
     WOLF_VARIANTS("wolf_variants", new GenericResourceGenerator("wolf_variant")),
     TRIM_MATERIALS("trim_materials", new GenericResourceGenerator("trim_material")),
     TRIM_PATTERNS("trim_patterns", new GenericResourceGenerator("trim_pattern")),
-    ENCHANTMENTS("enchantment", new GenericResourceGenerator("enchantment", List.of(), true)),
+    ENCHANTMENTS_SNBT("enchantments", new GenericResourceGenerator("enchantment", List.of(), true)),
+    ENCHANTMENTS_JSON("enchantments", new GenericResourceGenerator("enchantment", List.of(), false)),
     PAINTING_VARIANTS("painting_variants", new GenericResourceGenerator("painting_variant")),
     JUKEBOX_SONGS("jukebox_songs", new GenericResourceGenerator("jukebox_song")),
 
